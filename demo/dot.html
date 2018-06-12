@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	{{= }} 赋值
+	<div id="showId"></div>
+	<script id="tempId" type="text/x-dot-template">
+		<div> Hi {{=it.name}}</div>
+	</script>
+
+	<hr>
+
+	{{ for var key in data { }}
+	{{= key }}
+	{{  } }}  循环
+	<div id="showId2"></div>
+	<script id="tempId2" type="text/x-dot-template">
+		{{  for(var prop in it){  }}
+			<div>Key:{{= prop }} --- value:{{= it[prop]}}</div>
+		{{ } }}
+	</script>
+	<hr>
+	{{~data.array :value:index }}
+		...
+	{{~}} 数组
+	
+	<div id="showId3"></div>
+	<script id="tempId3" type="text/x-dot-template">
+		{{~it.array:value:index }}
+			<div>{{= index+1 }}:{{= value}}!</div>
+		{{~ }}
+	</script>
+	<hr>
+	
+	{{? }} 条件
+	格式：
+	{{? }} if
+	{{?? }} else if
+	{{??}} else
+	<div id="showId4"></div>
+	<script id="tempId4" type="text/x-dot-template">
+		{{? !it.name }}
+			<div>Hi: {{=it.name}}</div>
+		{{?? it.age != 0}}
+			<div>Your age {{=it.age}}</div>
+		{{??}}
+		end
+		{{?}}
+	</script>
+	<hr>
+	
+	{{! }} encoding
+	<div id="showId5"></div>
+	<script id="tempId5" type="text/x-dot-template">
+		Visit {{!it.uri}} {{!it.html}}
+	</script>
+	<hr>
+
+	<div id="showId6"></div>
+	<script id="tempId6" type="text/x-dot-template">
+		{{##def.snippet:
+	    <div>{{=it.name}}</div>{{#def.joke}}
+	    #}}
+	    {{#def.snippet}}
+	    {{=it.html}}
+	</script>
+	<hr>
+
+
+	<script type="text/javascript" src="../doT.js"></script>
+	<script type="text/javascript">
+		var data = {"name":"Jabo","age":26};
+		var tempText = doT.template(document.getElementById("tempId").innerText);
+		document.getElementById("showId").innerHTML = tempText(data);
+
+		var data2 = {"name":"Jake","age":31,"interests":["basketball","hockey","photography"],"contact":{"email":"jake@xyz.com","phone":"999999999"}};
+		var tempText2 = doT.template(document.getElementById("tempId2").innerText);
+		document.getElementById("showId2").innerHTML = tempText2(data2);
+
+
+		var data3 = {"array":["banana","apple","orange"]};
+		var tempText3 = doT.template(document.getElementById("tempId3").innerText);
+		document.getElementById("showId3").innerHTML = tempText3(data3);
+
+		var data4 = {"name":"Jake","age":31};
+		var tempText4 = doT.template(document.getElementById("tempId4").innerText);
+		document.getElementById("showId4").innerHTML = tempText4(data4);
+
+		var data5 =  {"uri":"http://jq22.com/?keywords=Yoga","html":"<div style='background: #f00; height: 30px; line-height: 30px;'>html元素</div>"};
+		var tempText5 = doT.template(document.getElementById("tempId5").innerText);
+		document.getElementById("showId5").innerHTML = tempText5(data5);
+
+
+		var data6 = {"name":"Jake","age":31,"html":"<div style='background: #f00; height: 30px; line-height: 30px;'>html元素</div>"};
+		var defPart = {"joke":"<div>{{=it.name}} who?</div>"};
+		var tempText6 = doT.template(document.getElementById("tempId6").innerText,undefined,defPart);
+		document.getElementById("showId6").innerHTML = tempText6(data6);
+	</script>
+
+</body>
+</html>
